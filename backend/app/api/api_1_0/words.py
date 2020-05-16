@@ -35,24 +35,17 @@ async def get_all_words():
     return await crud.get_all()
 
 @router.put("/word/{id}", response_model=WordDB)
-async def update_word(payload: WordSchema, id: int = Path(..., gt=0)) -> WordDB:
+async def update_word(payload: WordSchema, id: int = Path(..., gt=0)):
     word = await crud.get(id)
     if not word:
         raise HTTPException(status_code=404, detail="words_num not found")
 
-    update_data = payload.dict(exclude_unset=True)
-    word_record = await crud.put(id, update_data)
-
-    word_id = word_record[0][0]
-    word_update_time = word_record[0][1]
-    word_create_time = word_record[0][2]
-    word_words_num = word_record[0][3]
+    word_id = await crud.put(id, payload)
 
     response_object = {
         "id": word_id,
-        "word": word_words_num,
-        "create_time": word_create_time,
-        "update_time": word_update_time,
+        "words_num": payload.words_num,
+        "create_time": payload.create_time,
     }
     return response_object
 

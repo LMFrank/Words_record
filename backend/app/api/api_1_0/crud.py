@@ -29,7 +29,7 @@ async def put(id: int, payload: WordSchema) -> WordDB:
         .update()
         .where(id == words.c.id)
         .values(payload)
-        .returning(words.c.id, words.c.update_time, words.c.create_time, words.c.words_num)
+        .returning(words.c.id)
     )
     return await database.fetch_all(query=query)
 

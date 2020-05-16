@@ -103,10 +103,9 @@ def test_update_word(test_app, monkeypatch, id, payload, status_code):
     monkeypatch.setattr(crud, "get", mock_get)
 
     async def mock_put(id, payload):
-        return [(1, 1, 1, 1)]
+        return 1
 
     monkeypatch.setattr(crud, "put", mock_put)
-    print("aa:" + json.dumps(payload))
 
     response = test_app.put(API_PREFIX + f"/word/{id}", data=json.dumps(payload))
     assert response.status_code == 200
@@ -116,8 +115,8 @@ def test_update_word(test_app, monkeypatch, id, payload, status_code):
     [
         [1, {}, 422],
         [99999, {"words_num": 10, "create_time": "2020-01-03T12:00:00"}, 404],
-        [0, {"words_num": 20, "create_time": "2020-01-03T12:00:00"}, 422],
-    ],
+        [0, {"words_num": 20, "create_time": "2020-01-03T12:00:00"}, 422]
+    ]
 )
 def test_update_word_invalid(test_app, monkeypatch, id, payload, status_code):
     async def mock_get(id):

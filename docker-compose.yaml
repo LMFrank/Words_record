@@ -6,6 +6,8 @@ services:
     command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
     volumes:
       - ./backend/:/usr/src/words
+    environment:
+      - TZ=Asia/Shanghai
     ports:
       - 8002:8000
     
@@ -14,5 +16,7 @@ services:
     command: streamlit run app/main.py --server.port 8501
     volumes:
       - ./frontend:/usr/src/streamlit
+    environment:
+      - TZ=Asia/Shanghai
     ports:
       - 8501:8501
